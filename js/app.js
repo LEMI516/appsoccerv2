@@ -5,6 +5,6 @@ $$('.panel-left').on('panel:opened', function () {
   console.log('Panel left: opened');
 });
 
-$( document ).ready(function() {
+$(document).ready(function() {
   database_onload('');
 });
