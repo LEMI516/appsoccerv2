@@ -8,11 +8,20 @@ function setVal(id,value){ item(id).value=value; }
 
 function setHtml(id,value){ item(id).innerHTML=value; }
 
+function innerSelectColors(id,array,default_value){
+    var html='';
+    html='<option value="" >'+default_value+'</option>';
+    for(var i=0;i<array.length;i++){
+        html+='<option value="'+array[i]+'" style="background-color:'+array[i]+';color:'+array[i]+'" >'+array[i]+'</option>';
+    }
+    item(id).innerHTML=html; 
+}
+
 function innerSelectSimple(id,array,default_value){
     var html='';
     html='<option value="" >'+default_value+'</option>';
     for(var i=0;i<array.length;i++){
-        html+='<option value="'+array[i]+'" style="background-color:'+array[i]+'" >'+array[i]+'</option>';
+        html+='<option value="'+array[i]+'" >'+array[i]+'</option>';
     }
     item(id).innerHTML=html; 
 }

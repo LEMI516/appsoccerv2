@@ -7,7 +7,7 @@ var defaultSelected='';
 var teamEntity={};
 
 $( document ).ready(function() {
-    innerSelectSimple('colorSelect',colours(),'Defecto...');
+    innerSelectColors('colorSelect',colours(),'Defecto...');
     showItem('li_seleccion');
     onload_database('readTeams("loadParents()")')
 });
