@@ -1,6 +1,7 @@
 var db;
 var teamsArray;
 var plantillasArray;
+var HistoricoTeamsArray;
 
 function onload_database(name_fun){
     var request = window.indexedDB.open(name_database, version);
@@ -80,5 +81,79 @@ function readPlantillas(name_fun) {
             if(name_fun!='') eval(name_fun);
         }
     };    
- }
+}
+
+function readHistoricoTeams(name_fun) {
+    var objectStore = db.transaction(["history"]).objectStore("history");
+    HistoricoTeamsArray=new Array();
+    objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            var val=cursor.value;
+            var tgan=findTeamByAbre(val.cam,teamsArray);
+            var tsub=findTeamByAbre(val.sub,teamsArray);
+            var tter=findTeamByAbre(val.ter,teamsArray);
+            var tcuar=findTeamByAbre(val.cuar,teamsArray);
+            var history={id:val.id,tor:val.torn,cam:tgan,sub:tsub,ter:tter,cuar:tcuar};
+            HistoricoTeamsArray.push(history);
+            cursor.continue();
+        }else{
+            if(name_fun!='') eval(name_fun);
+        }
+    };
+}
+
+function readHistoricoTeamsByTorneo(index,value,name_fun) {
+    var objectStore = db.transaction(["history"]).objectStore("history");
+    var index =  objectStore.index(index).openCursor(IDBKeyRange.only(value));
+    HistoricoTeamsArray=new Array();
+    index.onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            var val=cursor.value;
+            var tgan=findTeamByAbre(val.cam,teamsArray);
+            var tsub=findTeamByAbre(val.sub,teamsArray);
+            var tter=findTeamByAbre(val.ter,teamsArray);
+            var tcuar=findTeamByAbre(val.cuar,teamsArray);
+            var history={id:val.id,tor:val.torn,cam:tgan,sub:tsub,ter:tter,cuar:tcuar};
+            HistoricoTeamsArray.push(history);
+            cursor.continue();
+        }else{
+            if(name_fun!='') eval(name_fun);
+        }
+    };
+}
+
+function teamsByHistorialComp(list){
+    var teamsHistorial=new Array();
+    var i=0;
+    for(i in list){
+        var h=list[i];
+        if(!findTeamHistoriaList(h.cam.abre,teamsHistorial) && h.cam.abre!='FIFA') teamsHistorial.push({t:h.cam,pun:0,p:0,s:0,tr:0,c:0});
+        if(!findTeamHistoriaList(h.sub.abre,teamsHistorial) && h.sub.abre!='FIFA') teamsHistorial.push({t:h.sub,pun:0,p:0,s:0,tr:0,c:0});
+        if(!findTeamHistoriaList(h.ter.abre,teamsHistorial) && h.ter.abre!='FIFA') teamsHistorial.push({t:h.ter,pun:0,p:0,s:0,tr:0,c:0});
+        if(!findTeamHistoriaList(h.cuar.abre,teamsHistorial) && h.cuar.abre!='FIFA') teamsHistorial.push({t:h.cuar,pun:0,p:0,s:0,tr:0,c:0});
+    }
+    return teamsHistorial;
+}
+
+function findTeamHistoriaList(abre,list){
+    var i=0;
+    for(i in list){
+        var t=list[i];
+        if(t.t.abre===abre){
+            return true;
+        }
+    }
+    return false;
+}
+
+function orderTeamsHistorialByCompetencia(listTeams){
+    listTeams.sort(function(a, b) {
+        var puna=parseInt(a.pun);
+        var punb=parseInt(b.pun);
+        return punb-puna;
+    });
+    return  listTeams;
+}
 

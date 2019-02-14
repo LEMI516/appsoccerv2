@@ -91,4 +91,17 @@ function closed_popup(selector){
     app.popup.close(selector, true);
 }
 
+function scaleTxt(texto){
+    var is=false;
+    var scale=0;
+    if(texto.length>=24){
+        scale=-2;
+        is=true;
+    }else if(texto.length>20){
+        scale=-1;
+        is=true;
+    }
+    return {is:is,scl:scale};
+}
+
 

@@ -17,3 +17,13 @@ function findById(list,id){
     }
     return null;
 }
+
+function findTeamByName(name,list){
+    for(i in list){
+        var t=list[i];
+        if(t.name.toLowerCase()==name.toLowerCase()){
+            return t;
+        }
+    }
+    return null;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2196f3">
+    <title>Equipos</title>
+    <link rel="stylesheet" href="../framwork7/css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="../framwork7/css/framework7-icons.css">
+    <link rel="stylesheet" href="../css/general.css">
+  </head>
+  <body class="color-theme-red">
+    <div id="app">
+      <div class="statusbar"></div>
+      <div class="view view-main">
+        <div data-name="home" class="page">
+
+        <div class="navbar theme-dark">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" onclick="location.href='../index.html'" class="link icon-only panel-open">
+                        <i class="f7-icons">arrow_left</i>
+                    </a>
+                </div>
+                <div class="title">Ranking</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="list">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Filtrar por tipo:</div>
+                                <div class="item-input-wrap">
+                                    <select id="tiposRanking" name="tiposRanking">
+                                        <option value="LC">LIGA COLOMBIANA</option>
+                                        <option value="CL">COPA LIBERTADORES</option>
+                                        <option value="UCL">UEFA CHAMPIONS LEAGUE</option>
+                                        <option value="CS">COPA SUDAMERICANA</option>
+                                        <option value="UEL">UEFA EUROPA LEAGUE</option>
+                                        <option value="CM">COPA MUNDIAL</option>  
+                                        <option value="CMC">COPA MUNDIAL DE CLUBES</option>
+                                        <option value="SUB">SUDAMERICA</option>
+                                        <option value="EUR">EUROPA</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>                      
+            <div class="data-table data-table-init card">
+                <div class="card-header">
+                    <div class="data-table-title">Listado</div>
+                      <div class="data-table-actions">
+                        <a class="link icon-only">
+                          <i class="f7-icons">sort_round</i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="card-content">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th class="checkbox-cell">
+                                <label class="checkbox"></label>
+                            </th>                              
+                            <th class="label-cell">Nombre</th>
+                            <th class="numeric-cell">
+                                <a class="link icon-only"><i class="f7-icons">star_round_fill</i></a>
+                            </th>
+                            <th class="numeric-cell">
+                                <a class="link icon-only"><i class="f7-icons">bookmark</i></a>
+                            </th>  
+                            <th class="numeric-cell">
+                                <a class="link icon-only"><i class="f7-icons">collection_fill</i></a>
+                            </th> 
+                            <th class="numeric-cell">
+                                <a class="link icon-only"><i class="f7-icons">more_round</i></a>
+                            </th>                                                                                 
+                         </tr>
+                        </thead>
+                        <tbody id="ranking" >
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../framwork7/js/framework7.bundle.min.js"></script>
+    <script type="text/javascript" src="../js/static.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../js/configDataBase.js"></script>
+    <script type="text/javascript" src="../js/dataBaseController.js"></script>
+    <script type="text/javascript" src="../js/tools.js"></script>
+    <script type="text/javascript" src="../js/entitysUtils.js"></script>
+    <script type="text/javascript" src="../js/ranking.js"></script>
+  </body>
+</html>
