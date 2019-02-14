@@ -1,5 +1,6 @@
 var db;
 var teamsArray;
+var plantillasArray;
 
 function onload_database(name_fun){
     var request = window.indexedDB.open(name_database, version);
@@ -10,6 +11,7 @@ function onload_database(name_fun){
  
     request.onsuccess = function(event) {
         db = request.result;
+        console.log("sucess");
         if(name_fun!='') eval(name_fun);
     };
 }
@@ -36,20 +38,6 @@ function deleteById(nameobjectStore,id,name_funcion){
     }
 }
 
-function readTeams(name_fun) {
-    var objectStore = db.transaction(["teams"]).objectStore("teams");
-    teamsArray=new Array();
-    objectStore.openCursor().onsuccess = function(event) {
-        var cursor = event.target.result;
-        if (cursor) {
-            teamsArray.push(cursor.value);
-            cursor.continue();
-        }else{
-            if(name_fun!='') eval(name_fun);
-        }
-    };
-}
-
 function updateStore(nameobjectStore,object,name_funcion) {
     var objectStore = db.transaction([nameobjectStore],"readwrite").objectStore(nameobjectStore);
         var index =  objectStore.index('id').openCursor(IDBKeyRange.only(parseInt(object.id)));
@@ -64,4 +52,33 @@ function updateStore(nameobjectStore,object,name_funcion) {
             }
         };
 }
+
+function readTeams(name_fun) {
+    var objectStore = db.transaction(["teams"]).objectStore("teams");
+    teamsArray=new Array();
+    objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            teamsArray.push(cursor.value);
+            cursor.continue();
+        }else{
+            if(name_fun!='') eval(name_fun);
+        }
+    };
+}
+
+function readPlantillas(name_fun) {
+    var objectStore = db.transaction(["plantilla"]).objectStore("plantilla");
+    plantillasArray=new Array();
+    objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            plantillasArray.push(cursor.value);
+            cursor.continue();
+        }else{
+            plantillasArray=depureArray(plantillasArray);
+            if(name_fun!='') eval(name_fun);
+        }
+    };    
+ }
 

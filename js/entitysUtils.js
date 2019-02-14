@@ -8,3 +8,12 @@ function findTeamByAbre(abre,list){
     }
     return null;
 }
+
+function findById(list,id){
+    for(i in list){
+        var l=list[i];
+        if(parseInt(l.id)===parseInt(id))
+            return l;
+    }
+    return null;
+}

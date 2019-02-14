@@ -80,7 +80,31 @@ function colours(){
             }
         }
     }
+    result.push('#F3F3F3');
     return result;
+}
+
+function create_table_color(idTable,column,fun){
+    var colorList=colours();
+    var table=item(idTable);
+    var html='';
+    var c=0;
+    for(var i=0;i<colorList.length;i++){
+        if(c==0) html+='<tr>';
+        if(c<column){
+            html+='<td data-color="'+colorList[i]+'" data-fun="'+fun+'" onclick="onClickTableColorCell(this)" style="" bgcolor="'+colorList[i]+'"></td>'
+            c++;
+        }else{ 
+            c=0;
+            html+='</tr>';
+        }
+    }
+    table.innerHTML=html;
+}
+
+function onClickTableColorCell(td){
+    $(td).css({ 'border': '3px solid #FFF' });
+    if(td.dataset.fun!= null && td.dataset.fun!= undefined && td.dataset.fun!= '') eval(td.dataset.fun+'("'+td.dataset.color+'")');
 }
 
 function logo(color,size){
@@ -146,6 +170,25 @@ function logo(color,size){
         +'</div>';
     }
     return html;
+}
+
+function depureArray(list){
+    var newArray=new Array();
+    for(i in list){
+        var l=list[i];
+        var existe=false;
+        for(j in newArray){
+            var n=newArray[j];
+            if(parseInt(l.id)===parseInt(n.id)){
+                existe=true;
+                break;
+            }
+        } 
+        if(!existe){
+            newArray.push(l);
+        }       
+    }
+    return newArray;
 }
 
 

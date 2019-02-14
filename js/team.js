@@ -1,23 +1,16 @@
-
-/*$$('.popup-addteam').on('popup:open', function (e, popup) {
-
-});*/
-
 var defaultSelected='';
 var teamEntity={};
 
 $( document ).ready(function() {
-    innerSelectColors('colorSelect',colours(),'Defecto...');
     showItem('li_seleccion');
     onload_database('readTeams("loadParents()")')
 });
 
-function createLogoColor(ele){
-    var colorS=ele.value;
+function createLogoColor(colorS){
     var oriS=(item('ori_logo').checked)?'H':'V';
     var color=item('color');
     var div=item('preview_logo');
-    if(colorS.trim()!=''){
+    if(colorS.trim()!='#F3F3F3'){
         color.value=(color.value.trim()=='')?oriS+';'+colorS:color.value.trim()+':'+colorS
         div.innerHTML=logo(color.value,'20');
     }else{
@@ -155,6 +148,11 @@ function orderTeamsByName(listTeams){
         return 0;
     });
     return  listTeams;
+}
+
+function openPopupColor(){
+    create_table_color('table_colours',4,'createLogoColor');
+    open_popup('.popup-color-select');
 }
 
 

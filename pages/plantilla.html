@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2196f3">
+    <title>Equipos</title>
+    <link rel="stylesheet" href="../framwork7/css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="../framwork7/css/framework7-icons.css">
+    <link rel="stylesheet" href="../css/general.css">
+  </head>
+  <body class="color-theme-red">
+    <div id="app">
+      <div class="statusbar"></div>
+      <div class="view view-main">
+        <div data-name="home" class="page">
+
+        <div class="navbar theme-dark">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" onclick="location.href='../index.html'" class="link icon-only">
+                        <i class="f7-icons">arrow_left</i>
+                    </a>
+                </div>
+                <div class="title">Plantillas</div>
+                <div class="right">
+                    <a href="#" class="link icon-only" onclick="open_add_plantilla()" >
+                        <i class="f7-icons">add_round</i>
+                    </a>
+                </div>                
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="list"><ul id="plantillasList"></ul></div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!--POPUP ADD PLANTILLA-->
+    <div class="popup popup-addplantilla">
+        <div class="view">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only popup-close">
+                            <i class="f7-icons">arrow_left</i>
+                        </a>
+                    </div>
+                    <div class="title" id="title-popup-addteam" >AGREGAR PLANTILLA</div>
+                </div>
+            </div>            
+            <div class="page-content">
+                <form class="list" id="my-form">
+                    <input type="hidden" id="hdd_id_team" value="" >
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Confederación</div>
+                                    <div class="item-input-wrap">
+                                        <select id="confederation" name="confederation">
+                                            <option value="UEFA">UEFA</option>
+                                            <option value="CONMEBOL">CONMEBOL</option>
+                                            <option value="CONCACAF">CONCACAF</option>
+                                            <option value="CAF">CAF</option>
+                                            <option value="AFC">AFC</option>
+                                            <option value="OFC">OFC</option>  
+                                            <option value="MUN">MUNDIAL</option>                                           
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>  
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Tipo Equipos</div>
+                                    <div class="item-input-wrap">
+                                        <select id="typeTeam" name="typeTeam">
+                                            <option value="CLUB">Club</option>
+                                            <option value="SEL">Selección</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li> 
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Tipo Torneo</div>
+                                    <div class="item-input-wrap">
+                                        <select id="typeTorneo" name="typeTorneo" onchange="onchangeCreatePlantillas()">
+                                            <option value="CGI">COPA - GRUPO (INI)</option>
+                                            <option value="CE">COPA - ELIMINATORIA</option>
+                                            <option value="CGFP">COPA - GRUPO (FP)</option>  
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Partidos</div>
+                                    <div class="item-input-wrap">
+                                        <select id="typeMatch" name="typeMatch">
+                                            <option value="UNI">UNICO</option>
+                                            <option value="LOCVIS">LOCAL - VISITANTE</option> 
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>                                                                     
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">N° Equipos</div>
+                                    <div class="item-input-wrap">
+                                        <input style="text-transform:uppercase" type="number" id="cantTeam" name="cantTeam" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="licantGru" >
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">N° Grupos</div>
+                                    <div class="item-input-wrap">
+                                        <input style="text-transform:uppercase" type="number" id="cantGru" name="cantGru" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="licantTeamxGru">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">N° Equipos x Grup</div>
+                                    <div class="item-input-wrap">
+                                        <input style="text-transform:uppercase" type="number" id="cantTeamxGru" name="cantTeamxGru" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </li> 
+                        <li id="licantClaxGru" >
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">N° Clasificados x Grup</div>
+                                    <div class="item-input-wrap">
+                                        <input style="text-transform:uppercase" type="number" id="cantClaxGru" name="cantClaxGru" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>  
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Identificador</div>
+                                    <div class="item-input-wrap">
+                                        <input style="text-transform:uppercase" type="text" id="namePlanti" name="namePlanti" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="licantMejTerceros">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">N° Mejores Terceros</div>
+                                    <div class="item-input-wrap">
+                                        <input style="text-transform:uppercase" type="number" id="cantMejTerceros" name="cantMejTerceros" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li >
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-input-wrap" >
+                                        <button id="btnCff" onclick="openConfigurePhase(this)"  data-value="" type="button" onclick="" class="col button button-raised button-round">Configurar Fase Final</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li> 
+                        <li id="libtnCfp">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-input-wrap" >
+                                        <button id="btnCfp" onclick="openConfigurePhase(this)" data-value="" type="button" onclick="" class="col button button-raised button-round">Configurar Fase Previa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>                                                                                                                                            
+                    </ul>
+                </form>
+                <div class="block block-strong row">
+                    <div class="col"><button onclick="addPlantilla()" class="col button button-fill button-round">GUARDAR</button></div>
+                    <div class="col"><button onclick="cleanValues()" class="col button button-fill button-round">LIMPIAR</button></div>
+                </div>                
+            </div>
+        </div>
+      </div>
+    <script type="text/javascript" src="../framwork7/js/framework7.bundle.min.js"></script>
+    <script type="text/javascript" src="../js/static.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../js/configDataBase.js"></script>
+    <script type="text/javascript" src="../js/dataBaseController.js"></script>
+    <script type="text/javascript" src="../js/tools.js"></script>
+    <script type="text/javascript" src="../js/entitysUtils.js"></script>
+    <script type="text/javascript" src="../js/plantilla.js"></script>
+  </body>
+</html>
