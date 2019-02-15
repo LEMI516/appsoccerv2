@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2196f3">
+    <title>Torneos</title>
+    <link rel="stylesheet" href="../framwork7/css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="../framwork7/css/framework7-icons.css">
+    <link rel="stylesheet" href="../css/general.css">
+  </head>
+  <body class="color-theme-red">
+    <div id="app">
+      <div class="statusbar"></div>
+      <div class="view view-main">
+        <div data-name="home" class="page">
+
+        <div class="navbar theme-dark">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" onclick="location.href='../index.html'" class="link icon-only panel-open">
+                        <i class="f7-icons">arrow_left</i>
+                    </a>
+                </div>
+                <div class="title">Torneos</div>
+                <div class="right">
+                    <a href="#" class="link icon-only" onclick="open_add_torneo()" >
+                        <i class="f7-icons">add_round</i>
+                    </a>
+                </div>                
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="list">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Filtrar por torneo:</div>
+                                <div class="item-input-wrap">
+                                    <select id="txtypeTorneo" onchange="listViewTorneos()" name="txtypeTorneo">
+                                        <option value="ALL">TODOS</option>
+                                        <option value="LC">LIGA COLOMBIANA</option>
+                                        <option value="CL">COPA LIBERTADORES</option>
+                                        <option value="UCL">UEFA CHAMPIONS LEAGUE</option>
+                                        <option value="CS">COPA SUDAMERICANA</option>
+                                        <option value="UEL">UEFA EUROPA LEAGUE</option>
+                                        <option value="CM">COPA MUNDIAL</option>  
+                                        <option value="CMC">COPA MUNDIAL DE CLUBES</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>                      
+            <div class="list"><ul id="torneos"></ul></div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!--POPUP ADD TEAM-->
+    <div class="popup popup-addtorneo">
+        <div class="view">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only popup-close">
+                            <i class="f7-icons">arrow_left</i>
+                        </a>
+                    </div>
+                    <div class="title" id="title-popup-addteam" >CREAR TORNEO</div>
+                </div>
+            </div>            
+            <div class="page-content">
+                <form class="list" id="my-form">
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Competencia</div>
+                                    <div class="item-input-wrap">
+                                        <select id="competencia" name="competencia">
+                                            <option value="LC">LIGA COLOMBIANA</option>
+                                            <option value="CL">COPA LIBERTADORES</option>
+                                            <option value="UCL">UEFA CHAMPIONS LEAGUE</option>
+                                            <option value="CS">COPA SUDAMERICANA</option>
+                                            <option value="UEL">UEFA EUROPA LEAGUE</option>
+                                            <option value="CM">COPA MUNDIAL</option>  
+                                            <option value="CMC">COPA MUNDIAL DE CLUBES</option>                                             
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>  
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Plantilla</div>
+                                    <div class="item-input-wrap">
+                                        <select id="plantilla" name="plantilla"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>                                              
+                    </ul>
+                </form>
+                <div class="block block-strong row">
+                    <div class="col"><button onclick="addTorneo()" class="col button button-fill button-round">GUARDAR</button></div>
+                    <div class="col"></div>
+                </div>                
+            </div>
+        </div>
+      </div>
+    <script type="text/javascript" src="../framwork7/js/framework7.bundle.min.js"></script>
+    <script type="text/javascript" src="../js/static.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../js/configDataBase.js"></script>
+    <script type="text/javascript" src="../js/dataBaseController.js"></script>
+    <script type="text/javascript" src="../js/tools.js"></script>
+    <script type="text/javascript" src="../js/entitysUtils.js"></script>
+    <script type="text/javascript" src="../js/torneos.js"></script>
+  </body>
+</html>

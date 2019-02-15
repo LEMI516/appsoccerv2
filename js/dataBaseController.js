@@ -2,6 +2,8 @@ var db;
 var teamsArray;
 var plantillasArray;
 var HistoricoTeamsArray;
+var torneosArray;
+var teamsCompetenciaArray;
 
 function onload_database(name_fun){
     var request = window.indexedDB.open(name_database, version);
@@ -30,6 +32,16 @@ function add(nameobjectStore,objectStore,name_funcion) {
 
 function addSimple(nameobjectStore,objectStore,name_funcion) {
     var request = db.transaction([nameobjectStore], "readwrite").objectStore(nameobjectStore).add(objectStore);
+    request.onerror = function(event) {
+        console.log('Ocurrio un error en la base de datos')
+    }
+}
+
+function addSimpleFuntion(nameobjectStore,objectStore,name_funcion) {
+    var request = db.transaction([nameobjectStore], "readwrite").objectStore(nameobjectStore).add(objectStore);
+    request.onsuccess = function(event) {
+        if(name_funcion!= null && name_funcion!= undefined && name_funcion!= '') eval(name_funcion);
+    };    
     request.onerror = function(event) {
         console.log('Ocurrio un error en la base de datos')
     }
@@ -124,6 +136,38 @@ function readHistoricoTeamsByTorneo(index,value,name_fun) {
             var tcuar=findTeamByAbre(val.cuar,teamsArray);
             var history={id:val.id,tor:val.torn,cam:tgan,sub:tsub,ter:tter,cuar:tcuar};
             HistoricoTeamsArray.push(history);
+            cursor.continue();
+        }else{
+            if(name_fun!='') eval(name_fun);
+        }
+    };
+}
+
+function readTorneos(name_fun) {
+    var objectStore = db.transaction(["competencia"]).objectStore("competencia");
+    torneosArray=new Array();
+    objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            torneosArray.push(cursor.value);
+            cursor.continue();
+        }else{
+            torneosArray=depureArray(torneosArray);
+            if(name_fun!='') eval(name_fun);
+        }
+    };
+}
+
+function readCompetenciaTeam(idtorn,name_fun) {
+    var objectStore = db.transaction(["competencia_team"]).objectStore("competencia_team");
+    var index=objectStore.index('id_comp').openCursor(IDBKeyRange.only(idtorn));
+    teamsCompetenciaArray=new Array();
+    index.onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            var team=findTeamByAbre(cursor.value.team,teamsArray);
+            var teamComp={id:cursor.value.id,team:team,pos:cursor.value.fasep};
+            teamsCompetenciaArray.push(teamComp);
             cursor.continue();
         }else{
             if(name_fun!='') eval(name_fun);

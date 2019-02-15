@@ -132,3 +132,11 @@ function sclTxt(texto){
     }
     return {is:is,scl:scale};
 }
+
+function innerSelect(id,array){
+    var html='';
+    for(var i=0;i<array.length;i++){
+        html+='<option value="'+array[i].id+'" >'+array[i].value+'</option>';
+    }
+    $('#'+id).html(html);
+}

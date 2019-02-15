@@ -47,3 +47,35 @@ function filterHistoricoTeamsByTorneo(list,torn){
     }
     return rList;
 }
+
+function findTeamsBy(param,value,list){
+    var newArray=new Array();
+    for(i in list){
+        var t=list[i];
+        if(param==='conf' && t.conf==value[0]){
+            newArray.push(t);
+        }else if(param==='type' && t.type==value[0]){
+            newArray.push(t);
+        }else if(param==="parent" && t.parent==value[0]){
+            newArray.push(t);
+        }else if(param==='type_conf' && t.type==value[0] && (t.conf==value[1] || value[1]=='MUN')){
+            newArray.push(t);
+        }else if(param==='aux' && parseInt(t.aux)==parseInt(value[0])){
+            newArray.push(t);
+        }
+    }
+    return newArray;
+}
+
+function filterTeamsSelectionisHaveClub(listBase,teamsArray){
+    var aux=new Array();
+    var i=0;
+    for(i in listBase){
+        var t=listBase[i];
+        var list=findTeamsBy('parent',[t.abre],teamsArray);
+        if(list.length>0){
+            aux.push(t);
+        }
+    }
+    return aux;
+}
