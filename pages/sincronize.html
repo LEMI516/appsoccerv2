@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2196f3">
+    <title>Equipos</title>
+    <link rel="stylesheet" href="../framwork7/css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="../framwork7/css/framework7-icons.css">
+    <link rel="stylesheet" href="../css/general.css">
+  </head>
+  <body class="color-theme-red">
+    <div id="app">
+      <div class="statusbar"></div>
+      <div class="view view-main">
+        <div data-name="home" class="page">
+            <div class="navbar theme-dark">
+                <div class="navbar-inner sliding">
+                    <div class="left">
+                        <a href="#" onclick="location.href='../index.html'" class="link icon-only panel-open">
+                            <i class="f7-icons">arrow_left</i>
+                        </a>
+                    </div>
+                    <div class="title">Sincronización de Datos</div>
+                </div>
+            </div>
+            <div class="toolbar tabbar toolbar-top">
+                <div class="toolbar-inner">
+                    <a href="#tab-1" class="tab-link tab-link-active">Inicial</a>
+                    <a href="#tab-2" class="tab-link">Intercambio</a>
+                </div>
+            </div>
+            <div class="tabs-animated-wrap">
+                <div class="tabs">
+                    <div id="tab-1" class="page-content tab tab-active">
+                    <div class="block">
+                        <div class="list">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Seleccionar Modulo:</div>
+                                            <div class="item-input-wrap">
+                                                <select id="tabla" name="tabla">
+                                                    <option value="team">EQUIPOS</option>
+                                                    <option value="history">HISTORICOS</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Pegar datos:</div>
+                                            <div class="item-input-wrap">
+                                                <textarea id="container_json_import" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </li>                    
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="div-progressbar-infinite" class="block block-strong">
+                        <div>
+                            <p><span class="progressbar-infinite"></span></p>
+                        </div>                        
+                    </div>
+                    <div class="block block-strong row">
+                        <div class="col"><button onclick="loadDataBase()" class="col button button-fill button-round">EJECUTAR</button></div>
+                        <div class="col"><button onclick="cleanDatos()" class="col button button-fill button-round">LIMPIAR</button></div>
+                    </div>                    
+                    </div>
+                    <div id="tab-2" class="page-content tab">
+                    <div class="block">
+                        <p>Tab 2 content</p>
+                        ...
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../framwork7/js/framework7.bundle.min.js"></script>
+    <script type="text/javascript" src="../js/static.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../js/configDataBase.js"></script>
+    <script type="text/javascript" src="../js/dataBaseController.js"></script>
+    <script type="text/javascript" src="../js/tools.js"></script>
+    <script type="text/javascript" src="../js/entitysUtils.js"></script>
+    <script type="text/javascript" src="../js/sincronize.js"></script>
+  </body>
+</html>

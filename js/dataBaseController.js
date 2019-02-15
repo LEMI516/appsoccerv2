@@ -28,6 +28,13 @@ function add(nameobjectStore,objectStore,name_funcion) {
     }
 }
 
+function addSimple(nameobjectStore,objectStore,name_funcion) {
+    var request = db.transaction([nameobjectStore], "readwrite").objectStore(nameobjectStore).add(objectStore);
+    request.onerror = function(event) {
+        console.log('Ocurrio un error en la base de datos')
+    }
+}
+
 function deleteById(nameobjectStore,id,name_funcion){
     var request = db.transaction([nameobjectStore], "readwrite").objectStore(nameobjectStore).delete(parseInt(id));
     request.onsuccess = function(event) {

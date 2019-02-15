@@ -27,3 +27,23 @@ function findTeamByName(name,list){
     }
     return null;
 }
+
+function findSelectionById(aux,list){
+    for(i in list){
+        var t=list[i];
+        if(parseInt(t.aux)==parseInt(aux)){
+            return t;
+        }
+    }
+    return null;   
+}
+
+function filterHistoricoTeamsByTorneo(list,torn){
+    var i=0;
+    var rList=new Array();
+    for(i=0;i<list.length;i++){
+        var h=list[i];
+        if(h.tor==torn) rList.push(h);
+    }
+    return rList;
+}

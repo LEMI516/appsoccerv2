@@ -1,0 +1,45 @@
+.ranking {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.ranking td, .ranking th {
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.87em;
+    width: 10%;   
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2px;
+    padding-right: 2px; 
+    text-align: center;   
+}
+
+.ranking tr:nth-child(even){background-color: #f2f2f2;}
+
+.ranking th {
+    text-align: center;
+    background-color:#ff3b30;
+    color: white;
+    text-align: center !important; 
+}
+
+.ranking th:first-child {
+    width: 60%;
+    font-weight: bold;
+}
+
+.ranking td:first-child {
+    width: 60%;
+    font-weight: bold;
+    font-size: 0.88em;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.ranking font{
+    font-weight: bold;
+    font-size: 1.0em;    
+}

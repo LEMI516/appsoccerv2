@@ -95,13 +95,40 @@ function scaleTxt(texto){
     var is=false;
     var scale=0;
     if(texto.length>=24){
-        scale=-2;
+        scale=-1;
         is=true;
     }else if(texto.length>20){
-        scale=-1;
+        scale=0;
         is=true;
     }
     return {is:is,scl:scale};
 }
 
+function cptz(text){
+    var words=text.split(' ');
+    var finalText='';
+    for(var i=0;i<words.length;i++){
+        var word=words[i].toUpperCase();
+        if(word.length<=2){
+            if(word=='DE' || word=='Y') word=word.toLowerCase();
+        }else{
+            word=word[0].toUpperCase()+word.slice(1, word.length).toLowerCase();
+            if(word=='Del') word=word.toLowerCase();
+        }
+        finalText+=(finalText=='')?word:' '+word;
+    }
+    return finalText;
+}
 
+function sclTxt(texto){
+    var is=false;
+    var scale=0;
+    if(texto.length>=24){
+        scale=-1;
+        is=true;
+    }else if(texto.length>20){
+        scale=0;
+        is=true;
+    }
+    return {is:is,scl:scale};
+}

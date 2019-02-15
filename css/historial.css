@@ -1,0 +1,84 @@
+.historial {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.historial th {
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.87em;    
+    text-align: center;
+    background-color:#ff3b30;
+    color: white;
+    text-align: center !important; 
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2px;
+    padding-right: 2px;    
+}
+
+.historial font{
+    font-weight: bold;
+    font-size: 0.87em;    
+}
+
+.tr_firts{
+    background-color: #ffffff;
+}
+
+.tr_firts td:first-child, td:last-child{
+    width: 47.5%;
+}
+
+.tr_firts td:first-child{
+    text-align: right;
+}
+
+.tr_firts td:last-child{
+    text-align: left;
+}
+
+.tr_firts td{
+    width: 5%;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2px;
+    padding-right: 2px;    
+}
+
+.tr_second{
+    background-color: #f2f2f2;
+}
+
+.tr_second td:first-child, td:last-child{
+    width: 47.5%;
+}
+
+.tr_second td:first-child{
+    text-align: right;
+}
+
+.tr_second td:last-child{
+    text-align: left;
+}
+
+.tr_second td{
+    width: 5%;
+    text-align: center;
+    font-size: 0.8em;    
+}
+
+.tr_edicion{
+    background-color: #8e8e93;
+}
+
+.tr_edicion td{
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: bold;   
+    color: white; 
+}

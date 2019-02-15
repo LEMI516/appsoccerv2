@@ -50,28 +50,42 @@ function listViewHistory(){
         var j=auxHistoricoTeamsArray.length;
         for(var i=0;i<auxHistoricoTeamsArray.length;i++){
             var his=auxHistoricoTeamsArray[i];
-            html+=createItemLisviewHistorial(his,j);
+            html+=createItemLisviewHistorial(his,j,tor);
             j--;
         }
     }
     $('#history').html(html); 
 }
 
-function createItemLisviewHistorial(his,j){
-    return '<li class="accordion-item"><a href="#" class="item-content item-link">'+
-        '<div class="item-inner">'+
-            '<div class="item-title-row">'+
-                '<div class="item-title"><b>'+logo(his.cam.color)+his.cam.name+' ('+his.cam.parent+')</b></div>'+
-                '<div class="item-after">'+j+'°</div>'+
-            '</div>'+
-            '<div class="item-footer">'+his.sub.name+'('+his.sub.parent+')</div>'+
-        '</div></a>'+
-        '<div class="accordion-item-content">'+
-            '<div class="block">'+
-                '<p>'+his.ter.name+'('+his.ter.parent+') - '+his.cuar.name+'('+his.cuar.parent+')</p>'+
-            '</div>'+
-        '</div>'+  
-    '</li>';
+function createItemLisviewHistorial(his,j,tor){
+    var isShowParen=!(his.cam.type=='SEL' || tor=='LC');
+    var txtCam=nameTxt(his.cam,isShowParen);
+    var txtSub=nameTxt(his.sub,isShowParen);
+    var txtTer=nameTxt(his.ter,isShowParen);
+    var txtCuar=nameTxt(his.cuar,isShowParen);
+    return  '<tr class="tr_edicion">'+
+                '<td colspan="3" >Edición '+j+'</td>'+
+            +'</tr>'+
+            '<tr class="tr_firts" >'+
+                '<td>'+logo(his.cam.color)+'<font '+txtCam.cls+' ><b>'+txtCam.n+'</b></font></td>'+
+                '<td>-</td>'+
+                '<td><font '+txtSub.cls+' >'+txtSub.n+logo(his.sub.color)+'</font></td>'+
+            '</tr>'+
+            ((his.ter.name!='FIFA' && his.cuar.name!='FIFA')?
+            '<tr class="tr_second">'+
+                '<td><font '+txtTer.cls+' >'+txtTer.n+'</font></td>'+
+                '<td>-</td>'+
+                '<td><font '+txtCuar.cls+' >'+txtCuar.n+'</font></td>'+
+            +'</tr>':'');    
+}
+
+function nameTxt(team,isShowParen){
+    var parent=(isShowParen)?'('+team.parent+')':'';
+    var name=cptz(team.name)+parent;    
+    var scl=sclTxt(name);
+    var cls='';
+    if(scl.is)  cls='style="letter-spacing: '+scl.scl+'px ;"';
+    return {n:name,cls:cls};
 }
 
 

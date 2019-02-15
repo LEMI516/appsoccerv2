@@ -91,7 +91,7 @@ function createItemLisviewTeams(pos,name,color,id,abre,parent){
     '<div class="item-content">'+
         '<div class="item-inner">'+
             '<div class="item-title" data-abre="'+abre+'" onclick="open_update_team(this)">'+
-            ''+pos+'. '+logo(color)+name+''+
+            ''+pos+'. '+logo(color)+cptz(name)+''+
             '<div class="item-footer">'+abre+' - '+parent+'</div></div>'+
             '<div class="item-after">'+
                 '<a href="#" data-id="'+id+'" data-name="'+name+'" onclick="dialogEliminarTeam(this)" class="link icon-only"><i class="f7-icons">trash</i></a>'+

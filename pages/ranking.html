@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../framwork7/css/framework7.bundle.min.css">
     <link rel="stylesheet" href="../framwork7/css/framework7-icons.css">
     <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/ranking.css">
   </head>
   <body class="color-theme-red">
     <div id="app">
@@ -34,7 +35,7 @@
                             <div class="item-inner">
                                 <div class="item-title item-label">Filtrar por tipo:</div>
                                 <div class="item-input-wrap">
-                                    <select id="tiposRanking" name="tiposRanking">
+                                    <select id="tiposRanking" onchange="cargarRanking()" name="tiposRanking">
                                         <option value="LC">LIGA COLOMBIANA</option>
                                         <option value="CL">COPA LIBERTADORES</option>
                                         <option value="UCL">UEFA CHAMPIONS LEAGUE</option>
@@ -51,42 +52,18 @@
                     </li>
                 </ul>
             </div>                      
-            <div class="data-table data-table-init card">
-                <div class="card-header">
-                    <div class="data-table-title">Listado</div>
-                      <div class="data-table-actions">
-                        <a class="link icon-only">
-                          <i class="f7-icons">sort_round</i>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="card-content">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th class="checkbox-cell">
-                                <label class="checkbox"></label>
-                            </th>                              
-                            <th class="label-cell">Nombre</th>
-                            <th class="numeric-cell">
-                                <a class="link icon-only"><i class="f7-icons">star_round_fill</i></a>
-                            </th>
-                            <th class="numeric-cell">
-                                <a class="link icon-only"><i class="f7-icons">bookmark</i></a>
-                            </th>  
-                            <th class="numeric-cell">
-                                <a class="link icon-only"><i class="f7-icons">collection_fill</i></a>
-                            </th> 
-                            <th class="numeric-cell">
-                                <a class="link icon-only"><i class="f7-icons">more_round</i></a>
-                            </th>                                                                                 
-                         </tr>
-                        </thead>
-                        <tbody id="ranking" >
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+            <table class="ranking">
+                <thead>
+                    <tr>
+                        <th>Listado</th>
+                        <th>CG</th>
+                        <th>CS</th>  
+                        <th>CF</th> 
+                        <th>PTS</th>                                                                                 
+                    </tr>
+                </thead>
+                <tbody id="ranking" ></tbody>
+            </table>
         </div>
         </div>
       </div>
