@@ -79,3 +79,24 @@ function filterTeamsSelectionisHaveClub(listBase,teamsArray){
     }
     return aux;
 }
+
+function getTeamsTorneo(torneo,teamsArray) {
+    var teams=torneo.teams;
+    var teamsCompetenciaArray=new Array();
+    for(var i=0;i<teams.length;i++){
+        var team=findTeamByAbre(teams[i].t,teamsArray);
+        var teamComp={team:team};
+        teamsCompetenciaArray.push(teamComp);        
+    }
+    return teamsCompetenciaArray;
+}
+
+function findEntityBy(id,list){
+    for(i in list){
+        var t=list[i];
+        if(t.id==id){
+            return t;
+        }
+    }
+    return null;
+}

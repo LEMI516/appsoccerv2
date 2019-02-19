@@ -1,9 +1,9 @@
 var db;
-var teamsArray;
-var plantillasArray;
-var HistoricoTeamsArray;
-var torneosArray;
-var teamsCompetenciaArray;
+var teamsArray=new Array();
+var plantillasArray=new Array();
+var HistoricoTeamsArray=new Array();
+var torneosArray=new Array();
+var entityAny={};
 
 function onload_database(name_fun){
     var request = window.indexedDB.open(name_database, version);
@@ -68,6 +68,20 @@ function updateStore(nameobjectStore,object,name_funcion) {
                 cursor.continue();
             }else{
                 toast('Registro Actualizado'); 
+                if(name_funcion!='') eval(name_funcion); 
+            }
+        };
+}
+
+function updateStoreSimple(nameobjectStore,object,name_funcion) {
+    var objectStore = db.transaction([nameobjectStore],"readwrite").objectStore(nameobjectStore);
+        var index =  objectStore.index('id').openCursor(IDBKeyRange.only(parseInt(object.id)));
+        index.onsuccess = function(event) {
+            var cursor = event.target.result;
+            if (cursor) {
+                var res = cursor.update(object);
+                cursor.continue();
+            }else{
                 if(name_funcion!='') eval(name_funcion); 
             }
         };
@@ -158,16 +172,14 @@ function readTorneos(name_fun) {
     };
 }
 
-function readCompetenciaTeam(idtorn,name_fun) {
-    var objectStore = db.transaction(["competencia_team"]).objectStore("competencia_team");
-    var index=objectStore.index('id_comp').openCursor(IDBKeyRange.only(idtorn));
+function readEntityforId(nameObjectStore,id,name_fun) {
+    var objectStore = db.transaction([nameObjectStore]).objectStore(nameObjectStore);
+    var index=objectStore.index('id').openCursor(IDBKeyRange.only(parseInt(id)));
     teamsCompetenciaArray=new Array();
     index.onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
-            var team=findTeamByAbre(cursor.value.team,teamsArray);
-            var teamComp={id:cursor.value.id,team:team,pos:cursor.value.fasep};
-            teamsCompetenciaArray.push(teamComp);
+            entityAny=cursor.value;
             cursor.continue();
         }else{
             if(name_fun!='') eval(name_fun);

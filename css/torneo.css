@@ -1,0 +1,64 @@
+.fixture {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.fix_divider{
+    background-color: #8e8e93;
+    font-size: 1.0em;
+    color: white;
+    padding: 10px 2px 10px 2px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.fix_divider td{
+    padding: 10px 0px 10px 0px;
+}
+
+.fix_group{
+    background-color: #ff3b30;
+    font-size: 1.0em;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+.fix_group td{
+    padding: 10px 0px 10px 10px;
+}
+
+.fix_group_t{
+    font-size: 0.88em;
+    text-align: left;
+}
+
+.fix_group_t td{
+    padding: 10px 0px 10px 5px;
+    font-size: 1.2em;
+}
+
+.fix_group_p{
+    background-color: #f2f2f2;
+}
+
+.fix_border{
+    border-bottom: solid 2px #ff3b30;
+}
+
+.team_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.team_table h1{
+    font-size: 0.6em;
+}
+
+.team_table td, .colour_table th {
+    border: 1px solid #000;
+    padding: 10px;
+}
+
+
+

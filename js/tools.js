@@ -140,3 +140,24 @@ function innerSelect(id,array){
     }
     $('#'+id).html(html);
 }
+
+function findTeamForFase(list,idf,idf2){
+    var i=0;
+    var aux=new Array();
+    for(i in list){
+        if(list[i].fase==idf && list[i].sfase==idf2){
+            aux.push(list[i]);
+        }
+    }
+    return aux;
+}
+
+function namet(team,torn){
+    var isShowParen=!(team.type=='SEL' || torn=='LC');
+    var parent=(isShowParen)?'('+cptz(team.parent)+')':'';
+    var name=cptz(team.name)+parent;
+    var scl=scaleTxt(name);
+    var cls='';
+    if(scl.is)  cls='style="letter-spacing: '+scl.scl+'px ;"';
+    return '<font '+cls+' >'+name+'</font>';
+}
