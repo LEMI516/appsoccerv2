@@ -85,7 +85,7 @@ function getTeamsTorneo(torneo,teamsArray) {
     var teamsCompetenciaArray=new Array();
     for(var i=0;i<teams.length;i++){
         var team=findTeamByAbre(teams[i].t,teamsArray);
-        var teamComp={team:team};
+        var teamComp={team:team,x:i};
         teamsCompetenciaArray.push(teamComp);        
     }
     return teamsCompetenciaArray;
@@ -99,4 +99,16 @@ function findEntityBy(id,list){
         }
     }
     return null;
+}
+
+function findTeamByAbreinTeamsArray(abre,array){
+    return  array.find( ent => ent.team.abre === abre );
+}
+
+function findFaseByIdinfasesArray(id,array){
+    return  array.find( ent => ent.IDF === id );
+}
+
+function findTeamByAbre2(abre,list){
+    return  list.find( ent => ent.abre === abre );
 }

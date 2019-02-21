@@ -1,5 +1,6 @@
 var torneo;
 var fasesArray;
+var fasesAsignn=new Array();
 var teamsBaseArrayFase=new Array();
 var loadteamsBaseArrayFase=new Array();
 var teamsCompetenciaArray=new Array();
@@ -8,35 +9,10 @@ var loadteamsBaseArrayFase=new Array();;
 
 $( document ).ready(function() {
     torneo=JSON.parse(localStorage.getItem('torneo'));
-    //executeFun.push("readTeams(1)");
-    //executeFun.push("onloadAddTeam();readCompetenciaTeam('"+torneo.pk+"',2)");
-    //executeFun.push("onloadTeamsCompetencia();");
-    //executeFun.push("buildFixture()");
     setHtml('h1PageTorneoAdmon',torneo.competencia+" "+torneo.edicion);    
     formateFase();
-    //onload_database('readTeams("readCompetenciaTeam(\''+torneo.pk+'\',\'onloadTeamsCompetencia()\')")');
     onload_database('readTeams("asignnTeamsCompetencia();onloadTeamsCompetencia();buildFixture()")');
 });
-
-function formateFase(){
-    fasesArray=new Array();
-    var isFasePrevia=false,isFaseGrupo=false,isFaseFinal=false,isUnico=true;
-    var fasePrevia='',faseFinal=torneo.plantilla.cff.split(':');    
-    if(torneo.plantilla.typeTorneo=='CGI'){
-        isFaseGrupo=true;
-    }else if(torneo.plantilla.typeTorneo=='CGFP') {
-        fasePrevia=torneo.plantilla.cfp.split(':');
-        isFaseGrupo=true;isFasePrevia=true;
-    } 
-    for(i=faseFinal.length-1;i>=0;i--) fasesArray.push({id:'F'+(parseInt(i)+1),pos:(parseInt(i)+1),name:'FASE '+(parseInt(i)+1),n:faseFinal[i],n2:0,type:'FE'}); 
-        
-    if(isFaseGrupo){
-        fasesArray.push({id:'FG',pos:0,name:'FASE GRUPOS',n:torneo.plantilla.cantTeamxGru,n2:torneo.plantilla.cantGru,type:'FG'});
-    }
-    if(isFasePrevia){
-        for(i=fasePrevia.length-1;i>=0;i--) fasesArray.push({id:'FP'+parseInt(i)+1,pos:(parseInt(i)+1),name:'FASE PREVIA '+(parseInt(i)+1),n:fasePrevia[i],n2:0,type:'FE'}); 
-    }
-}
 
 function open_add_team(){
     item('txtypeTeam').value=torneo.plantilla.typeTeam;
@@ -95,7 +71,7 @@ function agregar_equipo(abre){
     if(isValidTeamAdd(abre)){
         var torneAux=torneo;
         var teamsList=torneo.teams;
-        teamsList.push({ t:abre,f:asignnFases()})
+        teamsList.push({ t:abre,f:fasesAsignn })
         torneAux.teams=teamsList;
         updateStoreSimple('competencia',torneAux,'callReadTorneo()');
     }
@@ -112,24 +88,6 @@ function updateVariableTorneo(){
     onloadTeamsCompetencia();
 }
 
-function asignnTeamsCompetencia(){
-    teamsCompetenciaArray=getTeamsTorneo(torneo,teamsArray);
-}
-
-function asignnFases(){
-    var f=new Array();
-    for(var i=0;i<fasesArray.length;i++){
-        var fase=fasesArray[i];
-        f.push({ IDF:fase.id,gl:0,gv:0,pts:0,gls:0,prt:'N' });
-    }
-    return f;
-}
-
-function isValidTeamAdd(abre){
-    for(i in teamsCompetenciaArray) if(teamsCompetenciaArray[i].team.abre===abre) return false;
-    return true;   
-}
-
 function onloadTeamsCompetencia(){
     var i=0;var html=''; var i=0;
     for(i in teamsCompetenciaArray){
@@ -138,7 +96,6 @@ function onloadTeamsCompetencia(){
         html+=createItemLisviewTeams((parseInt(i)+1),t,x);        
     }    
     $('#teams').html(html); 
-    //readCompetenciaFixture(torneo.pk,3);
 }
 
 function createItemLisviewTeams(i,t,x){
@@ -170,16 +127,6 @@ function eliminarTeam(){
     updateStoreSimple('competencia',torneAux,'callReadTorneo()');
 }
 
-function arrayRemove(array, value) {
-    var arrayResul=new Array();
-    for(var i=0; i<array.length;i++){ 
-        if (array[i].t!=value) {
-            arrayResul.push(array[i]);
-        }
-    }
-    return arrayResul;
-}
-
 function buildFixture(){
     var html='',html2='';
     var isFasePrevia=false,isFaseGrupo=false,isFaseFinal=false,isUnico=true;
@@ -206,59 +153,73 @@ function buildFixture(){
             
             j++;
             var n=parseInt(faseFinal[i]);
-            html+='<tr class="fix_divider" ><td>Ronda Final '+(i+1)+' - '+(n/2)+' Encuentros</td><tr>';
+            html+='<tr class="fix_divider" ><td colspan="3">Ronda Final '+(i+1)+' - '+(n/2)+' Encuentros</td><tr>';
             for(k=0;k<(n/2);k++){
-                var fkfase='FE'+pkfase+(k+1);
-                var fixComp=new Array();//findTeamForFixtureGenAux(teamsCompFixtureArray,fkfase);
+                var fk='E'+(k+1);
+                var fixComp=findTeamsByFaseFixture(torneo,pkfase,fk);
                 if(fixComp.length>0){
                     var t1=fixComp[0];
                     var t2=fixComp[1];
-                    var marcadorIda='';
+                    var marcadorIda='',marcadorVuelta='',b1='',b2='',b1c='',b2c='';
                     var marcadorVuelta='';
-                    var marcadorFinal='';        
-                    var t1gl=parseInt(t1.fix.gl);
-                    var t1gv=parseInt(t1.fix.gv);
-                    var t2gl=parseInt(t2.fix.gl);
-                    var t2gv=parseInt(t2.fix.gv);
+                    var t1gl=parseInt(t1.f.gl);
+                    var t1gv=parseInt(t1.f.gv);
+                    var t2gl=parseInt(t2.f.gl);
+                    var t2gv=parseInt(t2.f.gv);
+                    var tt1=t1gl+t1gv;
+                    var tt2=t2gl+t2gv;
                     if(!isUnico){
                         marcadorIda=t1gl+'-'+t2gv;
-                        marcadorVuelta='<br>'+t2gl+'-'+t1gv;  
-                        marcadorFinal=(t1gl+t1gv)+'-'+(t2gl+t2gv);
+                        marcadorVuelta=t2gl+'-'+t1gv;  
                     }else{
                         marcadorIda=t1gl+'-'+t2gv;
-                    }        
-                    var ind=(isUnico)?1:0;                        
-                    html+='<li><a onclick="dialog_add_marcador(\''+t1.team.abre+'\',\''+t2.team.abre+'\',\''+t1.fix.id+'\',\''+t2.fix.id+'\','+ind+')">'
-                    +'<h2>'+logo(t1.team.color)+t1.team.name+'('+t1.team.parent+')</h2><span class="ui-li-count">'+marcadorIda+marcadorVuelta+'</span>'
-                    +'<h2>'+logo(t2.team.color)+t2.team.name+'('+t2.team.parent+')</h2>'
-                    +((!isUnico)?'<p class="ui-li-aside"><strong>'+marcadorFinal+'</strong></p>':'')
-                +'</a></li>';
+                    }  
+                    if(tt1>tt2){
+                        b1='<b>';b1c='</b>';;
+                    }else if(tt1<tt2){
+                        b2='<b>';b2c='</b>';
+                    }
+                    html+='<tr class="fix_group_t" '+
+                    'data-mar="IDA" data-n1="'+t1.t.name+'" data-gl="'+t1gl+'" data-pk="'+pkfase+'" data-f="'+fk+'" data-n2="'+t2.t.name+'" data-gv="'+t2gv+'" data-abre1="'+t1.t.abre+'" data-abre2="'+t2.t.abre+'" '+
+                    'onclick="dialog_add_marcador(this)" >'+
+                    '<td>'+logo(t1.t.color)+b1+namet(t1.t,torneo.competencia)+b1c+'</td>'+
+                    '<td colspan="2" align="center">'+marcadorIda+'</td>'+
+                    '</tr>'+
+                    '<tr class="fix_group_t fix_group_p fix_border" '+
+                    ((!isUnico)?' data-mar="VUE" data-n1="'+t2.t.name+'" data-gl="'+t2gl+'"  data-pk="'+pkfase+'" data-f="'+fk+'" data-n2="'+t1.t.name+'" data-gv="'+t1gv+'" data-abre1="'+t2.t.abre+'" data-abre2="'+t1.t.abre+'" ':'')+
+                    ((!isUnico)?' onclick="dialog_add_marcador(this)" ':'')+
+                    '>'+
+                    '<td>'+logo(t2.t.color)+b2+namet(t2.t,torneo.competencia)+b2c+'</td>'+
+                    '<td colspan="2" align="center">'+marcadorVuelta+'</td>'+
+                    '</tr>';                                         
                 }else{
-                    html+='<tr class="fix_group_t " ><td> - - - </td><tr>';
-                    html+='<tr class="fix_group_t fix_group_p fix_border" ><td> - - - </td><tr>';
+                    html+='<tr class="fix_group_t " ><td colspan="3"> - - - </td><tr>';
+                    html+='<tr class="fix_group_t fix_group_p fix_border" ><td colspan="3"> - - - </td><tr>';
                 }
             }
         }
     }
     if(isFaseGrupo){
         html2+=createOption('FG','FASE GRUPOS');
-        html+='<tr class="fix_divider" ><td>Fase Grupos </td><tr>';
+        html+='<tr class="fix_divider" ><td colspan="3">Fase Grupos </td><tr>';
         for(i=1;i<=parseInt(torneo.plantilla.cantGru);i++){
-            html+='<tr class="fix_group" ><td>Grupo '+i+' </td><tr>';
-            var n=parseInt(torneo.plantilla.cantTeamxGru);
-            var fixComp=new Array();//findTeamForFixtureGen(teamsCompFixtureArray,'G'+i);
+            html+='<tr class="fix_group" ><td>Grupo '+i+' </td><td align="center" width="12%" >P</td><td align="center" width="12%">G</td><tr>';
+            var fixComp=findTeamsByFaseFixture(torneo,'FG','G'+i);
             if(fixComp.length>0){
                 fixComp=orderTeamsFixtureByPunGd(fixComp);
                 for(var x=1;x<=fixComp.length;x++){
                     var t=fixComp[x-1];
-                    html+='<li><a onclick="dialog_add_puntaje(\''+t.team.abre+'\',\''+t.fix.id+'\');" >'
-                        +'<h2>'+(x)+'.'+logo(t.team.color)+t.team.name+'('+t.team.parent+')</h2><span class="ui-li-count">'+t.fix.pun+'</span>'
-                        +((parseInt(t.fix.gd)>0)?'<p class="ui-li-aside"><strong>'+t.fix.gd+'<br></strong></p>':'')
-                    +'</a></li>';
+                    html+='<tr data-name="'+cptz(t.t.name)+'" data-pts="'+t.f.pts+'" data-gls="'+t.f.gls+'" data-f="FG" data-abre="'+t.t.abre+'" '+
+                    ' onclick="dialog_add_puntaje(this);" '+
+                    ' class="fix_group_t '+((x%2==0)?'fix_group_p':'' )+'" >'+
+                    '<td>'+x+'.'+logo(t.t.color)+namet(t.t,torneo.competencia)+'</td>'+
+                    '<td align="center">'+t.f.pts+'</td>'+
+                    '<td align="center">'+t.f.gls+'</td>'+
+                    '</tr>';
                 }
             }else{
                 for(k=0;k<parseInt(torneo.plantilla.cantTeamxGru);k++){
-                    html+='<tr class="fix_group_t '+((k%2!=0)?'fix_group_p':'' )+'" ><td> - - -</td><tr>';
+                    html+='<tr class="fix_group_t '+((k%2!=0)?'fix_group_p':'' )+'" ><td colspan="3"> - - -</td><tr>';
                 }                
             }
         }
@@ -268,38 +229,51 @@ function buildFixture(){
             var id=parseInt(i)+1;
             var pkfase='FP'+id;
             html2+=createOption('FP'+id,'FASE PREVIA '+id);
+            
             j++;
-            var n=parseInt(fasePrevia[i]);
-            html+='<tr class="fix_divider" ><td>Ronda Final '+(i+1)+' - '+(n/2)+' Encuentros</td><tr>';
+            var n=parseInt(faseFinal[i]);
+            html+='<tr class="fix_divider" ><td colspan="3">Ronda Previa '+(i+1)+' - '+(n/2)+' Encuentros</td><tr>';
             for(k=0;k<(n/2);k++){
-                var fkfase='FE'+pkfase+(k+1);
-                var fixComp=new Array();//findTeamForFixtureGenAux(teamsCompFixtureArray,fkfase);
+                var fk='E'+(k+1);
+                var fixComp=findTeamsByFaseFixture(torneo,pkfase,fk);
                 if(fixComp.length>0){
                     var t1=fixComp[0];
                     var t2=fixComp[1];
-                    var marcadorIda='';
+                    var marcadorIda='',marcadorVuelta='',b1='',b2='',b1c='',b2c='';
                     var marcadorVuelta='';
-                    var marcadorFinal='';        
-                    var t1gl=parseInt(t1.fix.gl);
-                    var t1gv=parseInt(t1.fix.gv);
-                    var t2gl=parseInt(t2.fix.gl);
-                    var t2gv=parseInt(t2.fix.gv);
+                    var t1gl=parseInt(t1.f.gl);
+                    var t1gv=parseInt(t1.f.gv);
+                    var t2gl=parseInt(t2.f.gl);
+                    var t2gv=parseInt(t2.f.gv);
+                    var tt1=t1gl+t1gv;
+                    var tt2=t2gl+t2gv;
                     if(!isUnico){
                         marcadorIda=t1gl+'-'+t2gv;
-                        marcadorVuelta='<br>'+t2gl+'-'+t1gv;  
-                        marcadorFinal=(t1gl+t1gv)+'-'+(t2gl+t2gv);
+                        marcadorVuelta=t2gl+'-'+t1gv;  
                     }else{
                         marcadorIda=t1gl+'-'+t2gv;
-                    }        
-                    var ind=(isUnico)?1:0;                        
-                    html+='<li><a onclick="dialog_add_marcador(\''+t1.team.abre+'\',\''+t2.team.abre+'\',\''+t1.fix.id+'\',\''+t2.fix.id+'\','+ind+')">'
-                    +'<h2>'+logo(t1.team.color)+t1.team.name+'('+t1.team.parent+')</h2><span class="ui-li-count">'+marcadorIda+marcadorVuelta+'</span>'
-                    +'<h2>'+logo(t1.team.color)+t2.team.name+'('+t2.team.parent+')</h2>'
-                    +((!isUnico)?'<p class="ui-li-aside"><strong>'+marcadorFinal+'</strong></p>':'')
-                +'</a></li>';
+                    }  
+                    if(tt1>tt2){
+                        b1='<b>';b1c='</b>';;
+                    }else if(tt1<tt2){
+                        b2='<b>';b2c='</b>';
+                    }
+                    html+='<tr class="fix_group_t" '+
+                    'data-mar="IDA" data-n1="'+t1.t.name+'" data-gl="'+t1gl+'" data-pk="'+pkfase+'" data-f="'+fk+'" data-n2="'+t2.t.name+'" data-gv="'+t2gv+'" data-abre1="'+t1.t.abre+'" data-abre2="'+t2.t.abre+'" '+
+                    'onclick="dialog_add_marcador(this)" >'+
+                    '<td>'+logo(t1.t.color)+b1+namet(t1.t,torneo.competencia)+b1c+'</td>'+
+                    '<td colspan="2" align="center">'+marcadorIda+'</td>'+
+                    '</tr>'+
+                    '<tr class="fix_group_t fix_group_p fix_border" '+
+                    ((!isUnico)?' data-mar="VUE" data-n1="'+t2.t.name+'" data-gl="'+t2gl+'"  data-pk="'+pkfase+'" data-f="'+fk+'" data-n2="'+t1.t.name+'" data-gv="'+t1gv+'" data-abre1="'+t2.t.abre+'" data-abre2="'+t1.t.abre+'" ':'')+
+                    ((!isUnico)?' onclick="dialog_add_marcador(this)" ':'')+
+                    '>'+
+                    '<td>'+logo(t2.t.color)+b2+namet(t2.t,torneo.competencia)+b2c+'</td>'+
+                    '<td colspan="2" align="center">'+marcadorVuelta+'</td>'+
+                    '</tr>';                                         
                 }else{
-                    html+='<tr class="fix_group_t " ><td> - - - </td><tr>';
-                    html+='<tr class="fix_group_t fix_group_p fix_border" ><td> - - - </td><tr>';
+                    html+='<tr class="fix_group_t " ><td colspan="3"> - - - </td><tr>';
+                    html+='<tr class="fix_group_t fix_group_p fix_border" ><td colspan="3"> - - - </td><tr>';
                 }
             }
         }
@@ -311,7 +285,6 @@ function buildFixture(){
 function initFase(state){
     var idfase=val('selFases');
     if(state=='I') teamsBaseArrayFase=new Array();
-    //if(state=='I') loadTeamBaseArray();
     var html='';
     setHtml('contentFase',''); 
     if(idfase!=''){
@@ -327,36 +300,24 @@ function initFase(state){
                         html+='<tr class="fix_group_t '+((k%2!=0)?'fix_group_p':'' )+'" >'+
                         '<td width="85%">'+logo(tm.color)+namet(tm,torneo.competencia)+'</td>'+
                         '<td width="15%" align="center"><a href="#" data-abre="'+tm.abre+'" onclick="deleteTeamforBase(this)" class="link icon-only"><i class="f7-icons">trash</i></a></td>'
-                        +'<tr>';
+                        +'</tr>';
                     }
                 }
             }
-        }else if(fase.type=='FE'){
+        }else if(fase.type=='FF' || fase.type=='FP'){
             var n=parseInt(fase.n);
-            html+='<li data-role="list-divider">FASE '+fase.pos+'<span class="ui-li-count">'+(n/2)+'</span></li>';
-            label.innerHTML=shuffle(n);
+            html+='<tr class="fix_group" ><td colspan="2">Fase '+fase.pos+' -  '+(n/2)+' Encuentros </td><tr>';
             for(k=0;k<(n/2);k++){
-                var fk='FE'+fase.id+(k+1);
-                var ts=findTeamForFase(unionTeamsBaseArray(),fk);
+                var ts=findTeamForFase(unionTeamsBaseArray(),fase.id,'E'+(k+1));
                 if(ts.length>0){
-                    var t1=' - - - ',t2=' - - - ',fun='',abre1='',abre2='';
-                    if(ts.length==1 || ts.length>1){ t1=ts[0].name+'('+ts[0].parent+')';abre1=ts[0].abre; }
-                    if(ts.length>1){ t2=ts[1].name+'('+ts[1].parent+')'; abre2=ts[1].abre}
-                    if(ts.length<=1) fun='agregar_equipo_fase(\''+fk+'\',\''+fase.id+'\')';
-                    html+='<li><a onclick="'+fun+'">'
-                        +'<h2>'+t1+'</h2><h2>'+t2+'</h2>'
-                        +'</a>'
-                        +'<a data-icon="delete" onclick="deleteTeamforBaseTwo(\''+abre1+'\',\''+abre2+'\')" href="#"></a>'
-                    +'</li>';
-                }else{
-                    html+='<li><a onclick="agregar_equipo_fase(\''+fk+'\',\''+fase.id+'\')">'
-                        +'<h2> - - - </h2>'
-                        +'<h2> - - - </h2>'
-                        +'</a>'
-                        +'<a data-icon="delete" onclick="" href="#"></a>'
-                    +'</li>';
+                    for(var l=0;l<ts.length;l++){
+                        var tm=findTeamByAbre(ts[l].team,teamsArray);
+                        html+='<tr class="fix_group_t '+((l%2!=0)?'fix_group_p fix_border':'' )+' " >'+
+                        '<td width="85%">'+logo(tm.color)+namet(tm,torneo.competencia)+'</td>'+
+                        '<td width="15%" align="center"><a href="#" data-abre="'+tm.abre+'" onclick="deleteTeamforBase(this)" class="link icon-only"><i class="f7-icons">trash</i></a></td>'
+                        +'</tr>';                    
+                    }
                 }
-
             }
         }
         setHtml('contentFase',html); 
@@ -376,92 +337,33 @@ function agregar_equipo_fase(){
         for(i=1;i<=parseInt(fase.n2);i++){
             html+=createOption('FG_G'+i,'Grupo '+i);
         }
-        setHtml('confCruce',html);
+    }else if(fase.type=='FF'){
+        for(i=1;i<=parseInt(fase.n)/2;i++){
+            html+=createOption(fase.id+'_E'+i,'Encuentro '+i);
+        }
+    }else if(fase.type=='FP'){
+        for(i=1;i<=parseInt(fase.n)/2;i++){
+            html+=createOption(fase.id+'_E'+i,'Encuentro '+i);
+        }
     }
+    setHtml('confCruce',html);
     tableTeamsFormate();
     open_popup('.popup-configure-fase');
-}
-
-function tableTeamsFormate(){
-    var teamArray=new Array();
-    var teamsList=teamsCompetenciaforFase();
-    var i=0;
-    for(i in teamsList){
-        teamArray.push(teamsList[i].team);
-    } 
-    teamArray=orderTeamsByNameByParen(teamArray); 
-    create_table_teams('teamsCompetenciatable',teamArray)     
-}
-
-function teamsCompetenciaforFase(){
-    var teams=new Array();
-    var isExiste=false;
-    var i=0;
-    for(i in teamsCompetenciaArray){
-        var x=teamsCompetenciaArray[i];
-        var t=x.team;
-        k=0;
-        isExiste=false;
-        var tl=unionTeamsBaseArray();
-        for(k in tl){
-            var tm=tl[k].team;
-            if(t.abre==tm){
-                isExiste=true;
-                break; 
-            }
-        }
-        if(!isExiste){
-            teams.push(x);
-        }
-    }    
-    /*var faseAnt=faseAnterior(val('selFases'));
-    if(faseAnt!=null){
-        if(faseAnt.type=='FE'){
-            var i=0;
-            var lclasi=clasificadosArrayMethodByIdFase(faseAnt.id);
-            for(i in lclasi){
-                var x=lclasi[i];
-                var t=x.c.team;
-                var entity={fase:faseAnt,team:t,pk:faseAnt.id,pk2:faseAnt.type};
-                var k=0;
-                var count=0;
-                isExiste=false
-                var tl=unionTeamsBaseArray();
-                for(k in tl){
-                    var tm=tl[k].team;
-                    var fs=tl[k].fase;
-                    if(fs.id==faseAnt.id || fs.id==val('selFases')){
-                        count++;
-                        if(t.abre==tm.abre){
-                            isExiste=true;
-                            break; 
-                        }
-                    }
-                }
-                if(!isExiste && count>0){
-                    teams.push(entity);
-                }
-            }
-        }
-    }*/
-    return teams;
 }
 
 function addTeamtoFase(obj){
     var cruce=val('confCruce');
     var ent=cruce.split('_');
-    if(ent[0]=='FG'){
-        var tms=torneo;
-        for(var i=0;i<tms.teams.length;i++){
-            if(tms.teams[i].t==obj.dataset.abre){
-                for(var j=0;j<tms.teams[i].f.length;j++){
-                    if(tms.teams[i].f[j].IDF==ent[0]){
-                        tms.teams[i].f[j].prt=ent[1];
-                    }
-                }  
-                teamsBaseArrayFase.push({team:tms.teams[i].t,fase:ent[0],sfase:ent[1]});   
-                break;
-            }
+    var tms=torneo;
+    for(var i=0;i<tms.teams.length;i++){
+        if(tms.teams[i].t==obj.dataset.abre){
+            for(var j=0;j<tms.teams[i].f.length;j++){
+                if(tms.teams[i].f[j].IDF==ent[0]){
+                    tms.teams[i].f[j].prt=ent[1];
+                }
+            }  
+            teamsBaseArrayFase.push({team:tms.teams[i].t,fase:ent[0],sfase:ent[1]});   
+            break;
         }
     }
     tableTeamsFormate();
@@ -474,10 +376,69 @@ function deleteTeamforBase(obj){
     teamsBaseArrayFase=new Array();
     var k=0;
     for(k in aux){
-        var tm=aux[k].team;
-        if(abre!=tm){
-            teamsBaseArrayFase.push(aux[k]);
-        }
+        if(abre!=aux[k].team) teamsBaseArrayFase.push(aux[k]);
     }
     initFase('S');
+}
+
+function saveConfigurationFase(){
+    var k=0;
+    for(k in teamsBaseArrayFase){
+        var t=teamsBaseArrayFase[k];
+        var a=findTeamByAbreinTeamsArray(t.team,teamsCompetenciaArray);
+        var b=findFaseByIdinfasesArray(t.fase,fasesAsignn);
+        var tms=torneo;
+        tms.teams[parseInt(a.x)].f[parseInt(b.x)].prt=t.sfase;
+        updateStoreSimple('competencia',tms,'callLastUpdateTorneo()');
+    } 
+    toast('Fase configurada exitosamente');   
+    setHtml('contentFase',''); 
+}
+
+
+function callLastUpdateTorneo(){
+    readEntityforId('competencia',torneo.id,'updateVariableTorneoforFixture()');
+}
+
+function updateVariableTorneoforFixture(){
+    torneo=entityAny;
+    localStorage.setItem('torneo', JSON.stringify(torneo));
+    asignnTeamsCompetencia();
+    buildFixture();
+}
+
+function dialog_add_puntaje(obj){
+    var title=obj.dataset.name+' - '+obj.dataset.pts+'/'+obj.dataset.gls;
+    app.dialog.prompt(title, function (value) {
+        if(value.trim!=''){
+            var v=value.split('-');
+            var pts=parseInt(v[0]);
+            var gls=(v.length>1)?parseInt(v[1]):parseInt(obj.dataset.gls);
+            var a=findTeamByAbreinTeamsArray(obj.dataset.abre,teamsCompetenciaArray);
+            var b=findFaseByIdinfasesArray(obj.dataset.f,fasesAsignn);
+            var tms=torneo;
+            tms.teams[parseInt(a.x)].f[parseInt(b.x)].pts=pts;
+            tms.teams[parseInt(a.x)].f[parseInt(b.x)].gls=gls;
+            updateStoreSimple('competencia',tms,'callLastUpdateTorneo()');            
+        }
+    });
+}
+
+function dialog_add_marcador(obj){
+    var title=obj.dataset.n1+' - '+obj.dataset.gl+'</br>';
+    title+=obj.dataset.n2+' - '+obj.dataset.gv+'</br>';
+    app.dialog.prompt(title, function (value) {
+        if(value.trim!=''){
+            var v=value.split('-');
+            var gl=parseInt(v[0]);
+            var gv=parseInt(v[1]);
+            var a1=findTeamByAbreinTeamsArray(obj.dataset.abre1,teamsCompetenciaArray);
+            var a2=findTeamByAbreinTeamsArray(obj.dataset.abre2,teamsCompetenciaArray);
+            var b=findFaseByIdinfasesArray(obj.dataset.pk,fasesAsignn);
+            var tms=torneo;
+            tms.teams[parseInt(a1.x)].f[parseInt(b.x)].gl=gl;
+            tms.teams[parseInt(a2.x)].f[parseInt(b.x)].gv=gv;
+            updateStoreSimple('competencia',tms,'callLastUpdateTorneo()');            
+        }
+    });
 }
