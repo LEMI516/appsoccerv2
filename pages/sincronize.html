@@ -75,8 +75,57 @@
                     </div>
                     <div id="tab-2" class="page-content tab">
                     <div class="block">
-                        <p>Tab 2 content</p>
-                        ...
+                        <div class="list">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Dirección IP Server:</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" id="ipServer" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>                                
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Seleccionar Modulo:</div>
+                                            <div class="item-input-wrap">
+                                                <select id="tablaExport" name="tablaExport">
+                                                    <option value="teams">EQUIPOS</option>
+                                                    <option value="plantilla">PLANTILLAS</option>
+                                                    <option value="history">HISTORICOS</option>
+                                                    <option value="competencia">COMPETENCIAS</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Seleccionar Operación:</div>
+                                            <div class="item-input-wrap">
+                                                <select id="operacion" name="operacion">
+                                                    <option value="POST">ENVIAR</option>
+                                                    <option value="GET">RECIBIR</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>                                
+                            </ul>
+                        </div>
+                        <div id="div-progressbar-infinite-inter" class="block block-strong">
+                            <div>
+                                <p><span class="progressbar-infinite"></span></p>
+                            </div>                        
+                        </div>                        
+                        <div class="block block-strong row">
+                            <div class="col"><button onclick="sincronizarData()" class="col button button-fill button-round">SINCRONIZAR</button></div>
+                            <div class="col"></div>
+                        </div>                        
                     </div>
                     </div>
                 </div>

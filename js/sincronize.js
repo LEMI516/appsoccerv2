@@ -1,5 +1,6 @@
 $( document ).ready(function() {
     hideItem('div-progressbar-infinite');
+    hideItem('div-progressbar-infinite-inter');
     onload_database('readTeams()');
 });
 
@@ -78,4 +79,146 @@ function isAbreviatura(abre,list){
         }
     }
     return array.length;    
+}
+
+function sincronizarData(){
+    var table=val('tablaExport');
+    var ope=val('operacion');
+    var uri;
+    
+    if(ope==='POST'){
+        if(table=='teams') uri='teams/';
+        else if(table=='history') uri='historys/';
+        else if(table=='plantilla') uri='plantillas/';
+        else if(table=='competencia') uri='competencias/';
+        else{
+            toast('Operación no valida'); 
+            return;
+        }
+        readData(table,uri);
+    }else{
+        if(table=='teams') uri='allteams/';
+        else if(table=='history') uri='allhistorys/';
+        else if(table=='plantilla') uri='allplantillas/';
+        else{
+            toast('Operación no valida'); 
+            return;
+        }
+        receivedData(uri,table);
+    }
+}
+
+function readData(table,uri) {
+    var objectStore = db.transaction([table]).objectStore(table);
+    var dataArray=new Array();
+    objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            dataArray.push(cursor.value);
+            cursor.continue();
+        }else{
+            sendDataExport(dataArray,uri); 
+        }
+    };
+}
+
+function sendDataExport(dataArray,uri){
+    var ip=val('ipServer');
+    if(ip!=''){
+        var json=JSON.stringify(dataArray);
+        var url=ip+'/apisoccerhistory/'+uri;
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'false');
+        headers.append('Access-Control-Allow-Methods','POST');
+
+        try {
+            $.ajax({
+                type: 'POST',
+                headers: headers,
+                dataType: 'json',
+                contentType : "application/json",
+                data: json,
+                url: url,
+                beforeSend: function () {
+                    showItem('div-progressbar-infinite-inter');
+                },
+                success: function (data) {
+                    hideItem('div-progressbar-infinite-inter');
+                    if(data.result){
+                        toast('Proceso realizado exitosamente');
+                    }else{
+                        toast('Error al enviar datos, causa:'+data.msg);
+                    }
+                },
+                error : function(data) { 
+                    hideItem('div-progressbar-infinite-inter');
+                    toast('Ocurrio un error al sincronizar datos');
+                } 
+            });            
+        } catch (error) {
+            toast('Ocurrio un error al sincronizar datos, causa:'+error);
+            hideItem('div-progressbar-infinite-inter');
+        }
+    }
+}
+
+function receivedData(uri,type){
+    var ip=val('ipServer');
+    if(ip!=''){
+        var url=ip+'/apisoccerhistory/'+uri;
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'false');
+        headers.append('Access-Control-Allow-Methods','GET');
+
+        try {
+            $.ajax({
+                type: 'GET',
+                headers: headers,
+                dataType: 'json',
+                url: url,
+                beforeSend: function () {  
+                    showItem('div-progressbar-infinite-inter');
+                },
+                success: function (data) {
+                    if(data.result){
+                        onloadEntityDataBase(type,data)
+                    }else{
+                        toast('Error al enviar datos, causa:'+data.msg);
+                    }
+                    hideItem('div-progressbar-infinite-inter');
+                },
+                error : function(data) { 
+                    hideItem('div-progressbar-infinite-inter');
+                    console.log(data);
+                    toast('Ocurrio un error al sincronizar datos');
+                } 
+            });            
+        } catch (error) {
+            toast('Ocurrio un error al sincronizar datos, causa:'+error);
+            hideItem('div-progressbar-infinite-inter');
+        }
+    }
+}
+
+function onloadEntityDataBase(objStore,data){
+    if(data.object!=null && data.object!=undefined && data.object.length>0){
+        var objectStore = db.transaction([objStore], "readwrite").objectStore(objStore);
+        var result = objectStore.clear();
+        result.onsuccess = function(event) {
+            var i=0,count=0;
+            for(i in data.object){
+                db.transaction([objStore], "readwrite").objectStore(objStore).add(data[i]);
+                count++;
+            }
+            toast(count+' registros procesados');
+        };
+    }else{
+        toast('No se encontraron datos que procesar');
+    }
 }
