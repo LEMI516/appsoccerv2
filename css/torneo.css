@@ -26,10 +26,12 @@
 
 .fix_group td{
     padding: 10px 0px 10px 0px;
+    width:10%;
 }
 
 .fix_group td:first-child{
     padding-left: 10px;
+    width:80%;
 }
 
 .fix_group_t{

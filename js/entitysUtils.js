@@ -38,6 +38,16 @@ function findSelectionById(aux,list){
     return null;   
 }
 
+function findTorneosByPk(pk,list){
+    for(i in list){
+        var t=list[i];
+        if(t.pk==pk){
+            return t;
+        }
+    }
+    return null;   
+}
+
 function filterHistoricoTeamsByTorneo(list,torn){
     var i=0;
     var rList=new Array();

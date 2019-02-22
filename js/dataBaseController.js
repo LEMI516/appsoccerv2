@@ -127,7 +127,7 @@ function readHistoricoTeams(name_fun) {
             var tsub=findTeamByAbre(val.sub,teamsArray);
             var tter=findTeamByAbre(val.ter,teamsArray);
             var tcuar=findTeamByAbre(val.cuar,teamsArray);
-            var history={id:val.id,tor:val.torn,cam:tgan,sub:tsub,ter:tter,cuar:tcuar};
+            var history={id:val.id,tor:val.torn,cam:tgan,sub:tsub,ter:tter,cuar:tcuar,comp:val.comp};
             HistoricoTeamsArray.push(history);
             cursor.continue();
         }else{

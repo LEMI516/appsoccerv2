@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../framwork7/css/framework7-icons.css">
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/historial.css">
+    <link rel="stylesheet" href="../css/torneo.css">
   </head>
   <body class="color-theme-red">
     <div id="app">
@@ -150,6 +151,43 @@
             </div>
         </div>
       </div>
+      <!--POPUP ADD TEAM-->
+      <div class="popup popup-competencia">
+            <div class="view">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="left">
+                            <a href="#" class="link icon-only popup-close">
+                                <i class="f7-icons">arrow_left</i>
+                            </a>
+                        </div>
+                        <div class="title" >COMEPETENCIA</div>
+                        <div class="right">
+                            <a href="#" class="link icon-only" onclick="findHistoryEnt()" >
+                                <i class="f7-icons">attachment</i>
+                            </a>
+                        </div>                        
+                    </div>
+                </div>            
+                <div class="page-content">
+                    <form id="form_asignn_comp" class="list" id="my-form">
+                        <ul>
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Seleccionar Competencia:</div>
+                                        <div class="item-input-wrap">
+                                            <select id="competencia" onclick="formateFixture()" name="competencia"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li> 
+                        </ul>
+                    </form> 
+                    <table id="fixture" class="fixture" ></table>                         
+                </div>      
+            </div>   
+        </div>    
     <script type="text/javascript" src="../framwork7/js/framework7.bundle.min.js"></script>
     <script type="text/javascript" src="../js/static.js"></script>
     <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>

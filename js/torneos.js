@@ -17,16 +17,20 @@ function innerSelectPlantillas(){
 }
 
 function addTorneo(){
-    var elements='competencia|plantilla';
+    var elements='competencia|plantilla|edicion';
     var isValid=isValidValues(elements);
     if(isValid){
         var v=values(elements);
         var p=findById(plantillasArray,v[1]);
-        var torneo={pk:v[0]+(torneosArray.length+1),competencia:v[0],edicion:torneosArray.length+1,name:name_torneo(v[0]),plantilla:p,teams:new Array() };
-        add("competencia",torneo,'readTorneos("listViewTorneos()")');
+        var torneo={pk:v[0]+v[2],competencia:v[0],edicion:parseInt(v[2]),name:name_torneo(v[0]),plantilla:p,teams:new Array() };
+        add("competencia",torneo,'cleanTorneo();readTorneos("listViewTorneos()")');
     }else{
         toast('Debe ingresar todos los datos');
     }
+}
+
+function cleanTorneo(){
+    cleanFields('edicion');
 }
 
 function listViewTorneos(){
