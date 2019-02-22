@@ -357,11 +357,6 @@ function addTeamtoFase(obj){
     var tms=torneo;
     for(var i=0;i<tms.teams.length;i++){
         if(tms.teams[i].t==obj.dataset.abre){
-            for(var j=0;j<tms.teams[i].f.length;j++){
-                if(tms.teams[i].f[j].IDF==ent[0]){
-                    tms.teams[i].f[j].prt=ent[1];
-                }
-            }  
             teamsBaseArrayFase.push({team:tms.teams[i].t,fase:ent[0],sfase:ent[1]});   
             break;
         }
