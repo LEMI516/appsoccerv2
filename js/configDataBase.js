@@ -1,6 +1,6 @@
 
 
-function database_onload(){
+function database_onload(fun){
     var db;
     var request = window.indexedDB.open(name_database, version);
     request.onerror = function(event) {
@@ -10,6 +10,9 @@ function database_onload(){
     request.onsuccess = function(event) {
         db = request.result;
         console.log("success: "+ db);
+        if(fun!=null && fun!=undefined && fun!=''){
+            eval(fun);
+        }
     };
 
     request.onupgradeneeded = function(event) {

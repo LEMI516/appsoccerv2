@@ -6,7 +6,7 @@ $$('.panel-left').on('panel:opened', function () {
 });
 
 $(document).ready(function() {
-  onload_database('readTorneos("listViewTorneos()");');
+  database_onload('onload_database("readTorneos(\'listViewTorneos()\');")');
 });
 
 function listViewTorneos(){
