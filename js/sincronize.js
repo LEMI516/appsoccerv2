@@ -157,6 +157,7 @@ function sendDataExport(dataArray,uri){
                     hideItem('div-progressbar-infinite-inter');
                     var msj="";
                     msj+=textStatus;
+                    msj+="---"+data.status;
                     msj+="---"+errorThrown;
                     toast(msj);
                 } 
