@@ -153,10 +153,12 @@ function sendDataExport(dataArray,uri){
                         toast('Error al enviar datos, causa:'+data.msg);
                     }
                 },
-                error : function(data) { 
+                error : function(data,textStatus, errorThrown) { 
                     hideItem('div-progressbar-infinite-inter');
-                    toast('Ocurrio un error al sincronizar datos');
-                    toast(data.responseText);
+                    var msj="";
+                    msj+=textStatus;
+                    msj+="---"+errorThrown;
+                    toast(msj);
                 } 
             });            
         } catch (error) {
