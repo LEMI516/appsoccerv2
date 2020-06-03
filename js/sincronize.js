@@ -156,6 +156,7 @@ function sendDataExport(dataArray,uri){
                 error : function(data) { 
                     hideItem('div-progressbar-infinite-inter');
                     toast('Ocurrio un error al sincronizar datos');
+                    toast(data);
                 } 
             });            
         } catch (error) {
